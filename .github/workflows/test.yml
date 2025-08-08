@@ -32,7 +32,7 @@ jobs:
     - name: Test binary
       run: |
         # Test that the binary can start (it will wait for input, so we timeout)
-        timeout 5s ./ez-web-search-v2 || [ $? -eq 124 ]
+        timeout 5s ./ez-web-search || [ $? -eq 124 ]
         echo "✅ Binary test passed"
 
     - name: Lint (if available)

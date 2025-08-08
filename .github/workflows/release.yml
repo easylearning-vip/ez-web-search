@@ -63,7 +63,7 @@ jobs:
           os=$(echo $platform | cut -d'/' -f1)
           arch=$(echo $platform | cut -d'/' -f2)
           
-          output_name="ez-web-search-v2_${os}_${arch}"
+          output_name="ez-web-search_${os}_${arch}"
           if [ "$os" = "windows" ]; then
             output_name="${output_name}.exe"
           fi
@@ -100,12 +100,12 @@ jobs:
         
         ### Manual Install
         1. Download the appropriate binary for your platform
-        2. Make it executable: \`chmod +x ez-web-search-v2\`
+        2. Make it executable: \`chmod +x ez-web-search\`
         3. Configure Claude Code CLI (see README.md)
         
         ## Binaries
-        $(ls -la build/ez-web-search-v2_* | awk '{print "- " $9 " (" $5 " bytes)"}')
-        
+        $(ls -la build/ez-web-search_* | awk '{print "- " $9 " (" $5 " bytes)"}')
+
         ## Documentation
         - GitHub: https://github.com/easylearning-vip/ez-web-search
         - README: https://github.com/easylearning-vip/ez-web-search/blob/main/README.md
@@ -126,7 +126,7 @@ jobs:
     - name: Upload Release Assets
       run: |
         # Upload all binaries
-        for file in build/ez-web-search-v2_*; do
+        for file in build/ez-web-search_*; do
           if [ -f "$file" ]; then
             echo "Uploading $file..."
             gh release upload ${{ steps.version.outputs.version }} "$file"
@@ -146,7 +146,7 @@ jobs:
         # Verify the release was created successfully
         echo "✅ Release ${{ steps.version.outputs.version }} created successfully!"
         echo "📦 Binaries uploaded:"
-        ls -la build/ez-web-search-v2_*
+        ls -la build/ez-web-search_*
         echo ""
         echo "🚀 Installation command:"
         echo "curl -fsSL https://raw.githubusercontent.com/easylearning-vip/ez-web-search/main/install.sh | bash"

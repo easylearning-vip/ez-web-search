@@ -5,7 +5,7 @@
 set -e
 
 # Configuration
-BINARY_NAME="ez-web-search-v2"
+BINARY_NAME="ez-web-search"
 BUILD_DIR="build"
 CMD_PATH="./cmd/server"
 
@@ -109,7 +109,7 @@ $(ls -la $BUILD_DIR/${BINARY_NAME}_* | awk '{print "- " $9 " (" $5 " bytes)"}')
 
 Installation:
 1. Download the appropriate binary for your platform
-2. Make it executable: chmod +x ez-web-search-v2
+2. Make it executable: chmod +x ez-web-search
 3. Run the setup: ./setup-claude-cli.sh
 
 Or use the one-click installer:

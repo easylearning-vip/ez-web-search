@@ -22,8 +22,8 @@ echo "✅ Claude Code CLI found"
 echo "🔨 Building the MCP server..."
 make build
 
-if [ ! -f "./ez-web-search-v2" ]; then
-    echo "❌ Failed to build ez-web-search-v2"
+if [ ! -f "./ez-web-search" ]; then
+    echo "❌ Failed to build ez-web-search"
     exit 1
 fi
 
@@ -31,7 +31,7 @@ echo "✅ Server built successfully"
 
 # Get current directory
 CURRENT_DIR=$(pwd)
-BINARY_PATH="$CURRENT_DIR/ez-web-search-v2"
+BINARY_PATH="$CURRENT_DIR/ez-web-search"
 
 echo "📍 Binary location: $BINARY_PATH"
 

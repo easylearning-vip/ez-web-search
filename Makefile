@@ -3,7 +3,7 @@
 .PHONY: build test clean run dev install-deps lint format help
 
 # Variables
-BINARY_NAME=ez-web-search-v2
+BINARY_NAME=ez-web-search
 BINARY_PATH=./$(BINARY_NAME)
 CMD_PATH=./cmd/server
 GO_FILES=$(shell find . -name "*.go" -type f)

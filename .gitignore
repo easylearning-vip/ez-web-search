@@ -1,6 +1,6 @@
 # Binaries
 ez-web-search
-ez-web-search-v2
+ez-web-search
 *.exe
 *.exe~
 *.dll

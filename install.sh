@@ -14,7 +14,7 @@ NC='\033[0m' # No Color
 
 # Configuration
 REPO="easylearning-vip/ez-web-search"
-BINARY_NAME="ez-web-search-v2"
+BINARY_NAME="ez-web-search"
 INSTALL_DIR="$HOME/.local/bin"
 CONFIG_DIR="$HOME/.claude"
 

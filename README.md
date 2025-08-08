@@ -78,10 +78,10 @@ This script will:
    # https://github.com/easylearning-vip/ez-web-search/releases/latest
 
    # Or use curl (replace with your platform)
-   curl -L -o ez-web-search-v2 \
-     "https://github.com/easylearning-vip/ez-web-search/releases/latest/download/ez-web-search-v2_linux_amd64"
+   curl -L -o ez-web-search \
+     "https://github.com/easylearning-vip/ez-web-search/releases/latest/download/ez-web-search_linux_amd64"
 
-   chmod +x ez-web-search-v2
+   chmod +x ez-web-search
    ```
 
 2. **Configure Claude Code CLI**:
@@ -132,7 +132,7 @@ cp .env.example .env
 4. Build and run:
 ```bash
 make build
-./ez-web-search-v2
+./ez-web-search
 ```
 
 ### Environment Configuration
@@ -363,7 +363,7 @@ Add to your Claude Code CLI MCP configuration file:
 {
   "mcpServers": {
     "ez-web-search": {
-      "command": "/path/to/ez-web-search-v2",
+      "command": "/path/to/ez-web-search",
       "env": {
         "BIGMODEL_TOKEN": "your_bigmodel_api_token",
         "WEBFETCH_USER_AGENT_ROTATE": "true",
@@ -379,7 +379,7 @@ Add to your Claude Code CLI MCP configuration file:
 {
   "mcpServers": {
     "ez-web-search": {
-      "command": "./ez-web-search-v2",
+      "command": "./ez-web-search",
       "env": {
         "BIGMODEL_TOKEN": "your_bigmodel_api_token"
       }
@@ -411,7 +411,7 @@ Add to your Claude Desktop MCP configuration file (`claude_desktop_config.json`)
 {
   "mcpServers": {
     "ez-web-search": {
-      "command": "/path/to/ez-web-search-v2",
+      "command": "/path/to/ez-web-search",
       "env": {
         "BIGMODEL_TOKEN": "your_bigmodel_api_token"
       }
@@ -554,7 +554,7 @@ The script will:
    ```bash
    # Update the binary path
    PWD_PATH=$(pwd)
-   sed -i "s|/path/to/ez-web-search-v2|$PWD_PATH/ez-web-search-v2|g" ~/.claude/mcp_settings.json
+   sed -i "s|/path/to/ez-web-search|$PWD_PATH/ez-web-search|g" ~/.claude/mcp_settings.json
 
    # Set your BigModel API token
    sed -i 's/your_bigmodel_api_token_here/YOUR_ACTUAL_TOKEN/g' ~/.claude/mcp_settings.json
@@ -621,14 +621,14 @@ If the MCP server doesn't work in Claude Code CLI:
 
 1. **Check the binary path**:
    ```bash
-   which ez-web-search-v2
+   which ez-web-search
    # or
-   ls -la ./ez-web-search-v2
+   ls -la ./ez-web-search
    ```
 
 2. **Test the server manually**:
    ```bash
-   ./ez-web-search-v2
+   ./ez-web-search
    # Should start and wait for JSON-RPC input
    ```
 
