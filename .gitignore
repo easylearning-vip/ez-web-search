@@ -1,0 +1,87 @@
+# Binaries
+ez-web-search
+ez-web-search-v2
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool
+*.out
+coverage.html
+
+# Go workspace file
+go.work
+
+# Environment files
+.env
+.env.local
+.env.production
+.env.staging
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+debug.log
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Node modules (for testing tools)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Test artifacts
+test-results/
+coverage/
+
+# Build artifacts
+dist/
+build/
+bin/
+
+# Documentation build
+docs/_build/
+
+# Backup files
+*.bak
+*.backup
+
+# Claude Code CLI files
+.claude/sessions/
+.claude/logs/
+.claude/cache/
+
+# MCP Inspector cache
+.mcp-inspector/
+
+# Local configuration overrides
+config.local.json
+settings.local.json
