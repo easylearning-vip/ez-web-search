@@ -54,9 +54,48 @@ ez-web-search/
 
 ## 🚀 Quick Start
 
-### Using Make (Recommended)
+### One-Click Installation (Recommended)
 
 ```bash
+# Install and configure automatically
+curl -fsSL https://raw.githubusercontent.com/easylearning-vip/ez-web-search/main/install.sh | bash
+```
+
+This script will:
+- Download the latest release for your platform
+- Install the binary to `~/.local/bin`
+- Configure Claude Code CLI automatically
+- Set up your BigModel API token
+- Test the installation
+
+### Manual Installation
+
+#### From Release (Recommended)
+
+1. **Download the latest release**:
+   ```bash
+   # Go to releases page and download for your platform
+   # https://github.com/easylearning-vip/ez-web-search/releases/latest
+
+   # Or use curl (replace with your platform)
+   curl -L -o ez-web-search-v2 \
+     "https://github.com/easylearning-vip/ez-web-search/releases/latest/download/ez-web-search-v2_linux_amd64"
+
+   chmod +x ez-web-search-v2
+   ```
+
+2. **Configure Claude Code CLI**:
+   ```bash
+   ./setup-claude-cli.sh
+   ```
+
+#### From Source
+
+```bash
+# Clone the repository
+git clone https://github.com/easylearning-vip/ez-web-search.git
+cd ez-web-search
+
 # Build the server
 make build
 

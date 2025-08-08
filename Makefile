@@ -106,6 +106,17 @@ inspector-ui: build ## Start MCP Inspector UI
 	@echo "Starting MCP Inspector UI..."
 	npx @modelcontextprotocol/inspector $(BINARY_PATH)
 
+# Release targets
+build-release: ## Build release binaries for all platforms
+	@echo "Building release binaries..."
+	./scripts/build-release.sh
+
+release-local: build-release ## Create a local release (for testing)
+	@echo "Creating local release..."
+	@if [ ! -d "build" ]; then echo "❌ No build directory found. Run 'make build-release' first."; exit 1; fi
+	@echo "✅ Local release ready in build/ directory"
+	@ls -la build/
+
 # Configuration targets
 config-example: ## Show configuration example
 	@echo "Configuration example:"

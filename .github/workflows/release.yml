@@ -1,0 +1,152 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to release'
+        required: true
+        default: 'v1.0.0'
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  build:
+    name: Build and Release
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.23'
+
+    - name: Get version
+      id: version
+      run: |
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          echo "version=${{ github.event.inputs.tag }}" >> $GITHUB_OUTPUT
+        else
+          echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Install dependencies
+      run: go mod download
+
+    - name: Run tests
+      run: go test -v ./...
+
+    - name: Build binaries
+      run: |
+        mkdir -p build
+        
+        # Build for multiple platforms
+        platforms=(
+          "linux/amd64"
+          "linux/arm64"
+          "darwin/amd64"
+          "darwin/arm64"
+          "windows/amd64"
+        )
+        
+        for platform in "${platforms[@]}"; do
+          os=$(echo $platform | cut -d'/' -f1)
+          arch=$(echo $platform | cut -d'/' -f2)
+          
+          output_name="ez-web-search-v2_${os}_${arch}"
+          if [ "$os" = "windows" ]; then
+            output_name="${output_name}.exe"
+          fi
+          
+          echo "Building for $os/$arch..."
+          GOOS=$os GOARCH=$arch CGO_ENABLED=0 go build \
+            -ldflags="-w -s -X main.version=${{ steps.version.outputs.version }}" \
+            -o "build/$output_name" \
+            ./cmd/server
+        done
+
+    - name: Create checksums
+      run: |
+        cd build
+        sha256sum * > checksums.txt
+        cd ..
+
+    - name: Create release info
+      run: |
+        cat > build/RELEASE_INFO.txt << EOF
+        EZ Web Search MCP Server Release
+        ================================
+        
+        Version: ${{ steps.version.outputs.version }}
+        Build Date: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+        Git Commit: ${{ github.sha }}
+        
+        ## Installation
+        
+        ### One-Click Install (Recommended)
+        \`\`\`bash
+        curl -fsSL https://raw.githubusercontent.com/easylearning-vip/ez-web-search/main/install.sh | bash
+        \`\`\`
+        
+        ### Manual Install
+        1. Download the appropriate binary for your platform
+        2. Make it executable: \`chmod +x ez-web-search-v2\`
+        3. Configure Claude Code CLI (see README.md)
+        
+        ## Binaries
+        $(ls -la build/ez-web-search-v2_* | awk '{print "- " $9 " (" $5 " bytes)"}')
+        
+        ## Documentation
+        - GitHub: https://github.com/easylearning-vip/ez-web-search
+        - README: https://github.com/easylearning-vip/ez-web-search/blob/main/README.md
+        EOF
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.version.outputs.version }}
+        release_name: EZ Web Search MCP Server ${{ steps.version.outputs.version }}
+        body_path: build/RELEASE_INFO.txt
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Assets
+      run: |
+        # Upload all binaries
+        for file in build/ez-web-search-v2_*; do
+          if [ -f "$file" ]; then
+            echo "Uploading $file..."
+            gh release upload ${{ steps.version.outputs.version }} "$file"
+          fi
+        done
+        
+        # Upload checksums
+        gh release upload ${{ steps.version.outputs.version }} build/checksums.txt
+        
+        # Upload release info
+        gh release upload ${{ steps.version.outputs.version }} build/RELEASE_INFO.txt
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Update installation script
+      run: |
+        # Verify the release was created successfully
+        echo "✅ Release ${{ steps.version.outputs.version }} created successfully!"
+        echo "📦 Binaries uploaded:"
+        ls -la build/ez-web-search-v2_*
+        echo ""
+        echo "🚀 Installation command:"
+        echo "curl -fsSL https://raw.githubusercontent.com/easylearning-vip/ez-web-search/main/install.sh | bash"

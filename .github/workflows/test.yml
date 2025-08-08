@@ -1,0 +1,54 @@
+name: Test
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.23'
+
+    - name: Install dependencies
+      run: go mod download
+
+    - name: Run tests
+      run: go test -v ./...
+
+    - name: Build
+      run: make build
+
+    - name: Test binary
+      run: |
+        # Test that the binary can start (it will wait for input, so we timeout)
+        timeout 5s ./ez-web-search-v2 || [ $? -eq 124 ]
+        echo "✅ Binary test passed"
+
+    - name: Lint (if available)
+      run: |
+        if command -v golangci-lint >/dev/null 2>&1; then
+          golangci-lint run
+        else
+          echo "⚠️  golangci-lint not available, skipping"
+        fi
+
+    - name: Format check
+      run: |
+        if [ "$(gofmt -s -l . | wc -l)" -gt 0 ]; then
+          echo "❌ Code is not formatted. Run 'go fmt ./...'"
+          gofmt -s -l .
+          exit 1
+        else
+          echo "✅ Code is properly formatted"
+        fi
