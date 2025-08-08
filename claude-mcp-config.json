@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "ez-web-search": {
+      "command": "/path/to/ez-web-search-v2",
+      "env": {
+        "BIGMODEL_TOKEN": "your_bigmodel_api_token_here",
+        "WEBFETCH_USER_AGENT_ROTATE": "true",
+        "WEBFETCH_DELAY_MIN": "1s",
+        "WEBFETCH_DELAY_MAX": "3s",
+        "WEBFETCH_MAX_CONTENT_SIZE": "5000",
+        "WEBFETCH_MAX_LINKS": "50",
+        "WEBFETCH_MAX_IMAGES": "20",
+        "PATH": "/usr/local/bin:/usr/bin:/bin"
+      }
+    }
+  }
+}

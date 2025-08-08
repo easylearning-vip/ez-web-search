@@ -482,49 +482,46 @@ All tests pass with the official MCP Inspector, confirming full protocol complia
 
 ### Quick Setup for Claude Code CLI
 
+**Automated Setup (Recommended)**:
+```bash
+# Run the automated setup script
+./setup-claude-cli.sh
+```
+
+The script will:
+- Build the MCP server
+- Create Claude Code CLI configuration
+- Prompt for your BigModel API token
+- Test the configuration
+- Provide usage examples
+
+**Manual Setup**:
+
 1. **Build the server**:
    ```bash
    make build
    ```
 
-2. **Create MCP configuration**:
+2. **Copy configuration template**:
    ```bash
    # Create Claude Code CLI MCP configuration directory
    mkdir -p ~/.claude
 
-   # Create MCP settings file
-   cat > ~/.claude/mcp_settings.json << 'EOF'
-   {
-     "mcpServers": {
-       "ez-web-search": {
-         "command": "/path/to/your/ez-web-search-v2",
-         "env": {
-           "BIGMODEL_TOKEN": "your_bigmodel_api_token_here",
-           "WEBFETCH_USER_AGENT_ROTATE": "true",
-           "WEBFETCH_DELAY_MIN": "1s",
-           "WEBFETCH_DELAY_MAX": "3s",
-           "PATH": "/usr/local/bin:/usr/bin:/bin"
-         }
-       }
-     }
-   }
-   EOF
+   # Copy and customize the configuration template
+   cp claude-mcp-config.json ~/.claude/mcp_settings.json
    ```
 
-3. **Update the command path**:
+3. **Update configuration**:
    ```bash
-   # Replace /path/to/your/ez-web-search-v2 with actual path
+   # Update the binary path
    PWD_PATH=$(pwd)
-   sed -i "s|/path/to/your/ez-web-search-v2|$PWD_PATH/ez-web-search-v2|g" ~/.claude/mcp_settings.json
-   ```
+   sed -i "s|/path/to/ez-web-search-v2|$PWD_PATH/ez-web-search-v2|g" ~/.claude/mcp_settings.json
 
-4. **Set your API token**:
-   ```bash
-   # Replace with your actual BigModel API token
+   # Set your BigModel API token
    sed -i 's/your_bigmodel_api_token_here/YOUR_ACTUAL_TOKEN/g' ~/.claude/mcp_settings.json
    ```
 
-5. **Start Claude Code CLI**:
+4. **Start Claude Code CLI**:
    ```bash
    claude
    ```
