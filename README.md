@@ -1,10 +1,16 @@
 # EZ Web Search & Fetch MCP Server
 
-A complete, enterprise-grade Web Search and Fetch MCP (Model Context Protocol) server implemented in Go, providing comprehensive web interaction capabilities for AI applications with advanced anti-bot protection.
+**English** | [中文](README-zh.md)
+
+A complete, enterprise-grade Web Search and Fetch MCP (Model Context Protocol) server implemented in Go, providing comprehensive web interaction capabilities for AI applications with advanced anti-bot protection and configurable search engines.
 
 ## 🚀 Features
 
-- **Web Search Tool**: Search the web using BigModel's Web Search API
+- **Web Search Tool**: Search the web using BigModel's Web Search API with configurable search engines
+  - **search_std**: 智谱基础版搜索引擎 (default)
+  - **search_pro**: 智谱高阶版搜索引擎
+  - **search_pro_sogou**: 搜狗搜索
+  - **search_pro_quark**: 夸克搜索
 - **Web Fetch Tool**: Fetch and extract content from any web page with anti-bot protection
 - **Search Intent Analysis**: Optional search intent analysis and keyword extraction
 - **Content Extraction**: Intelligent extraction of titles, descriptions, text content, links, and images
@@ -143,6 +149,7 @@ cp .env.example .env
 
 # Edit .env file with your configuration
 # BIGMODEL_TOKEN="your_actual_bigmodel_api_token"
+# BIGMODEL_SEARCH_ENGINE="search_std"  # Options: search_std, search_pro, search_pro_sogou, search_pro_quark
 # WEBFETCH_USER_AGENT_ROTATE=true
 # WEBFETCH_DELAY_MIN="1s"
 # WEBFETCH_DELAY_MAX="3s"
@@ -573,9 +580,13 @@ Once configured, you can use the web search and fetch tools directly in your Cla
 ```
 > Search for "Go web scraping anti-bot techniques" and show me the latest approaches
 
-> Find recent articles about MCP protocol implementation in Go
+> Find recent articles about MCP protocol implementation in Go using search_pro engine
 
 > Search for "PuerkitoBio goquery tutorial" with search intent analysis
+
+> Use search_pro_sogou to search for "Go HTTP client best practices"
+
+> Search with search_pro_quark engine for "web scraping tutorials"
 ```
 
 **Web Fetch Examples**:
