@@ -35,6 +35,23 @@ func (h *MCPHandler) HandleWebSearch(ctx context.Context, request mcp.CallToolRe
 		return mcp.NewToolResultError(fmt.Sprintf("Missing or invalid query parameter: %v", err)), nil
 	}
 
+	// Extract search_engine parameter (optional, defaults to config default)
+	searchEngine := h.config.BigModel.SearchEngine
+	if engineVal, exists := request.GetArguments()["search_engine"]; exists {
+		if strVal, ok := engineVal.(string); ok && strVal != "" {
+			// Validate search engine
+			validEngines := map[string]bool{
+				"search_std":       true,
+				"search_pro":       true,
+				"search_pro_sogou": true,
+				"search_pro_quark": true,
+			}
+			if validEngines[strVal] {
+				searchEngine = strVal
+			}
+		}
+	}
+
 	// Extract search_intent parameter (optional, defaults to false)
 	searchIntent := false
 	if intentVal, exists := request.GetArguments()["search_intent"]; exists {
@@ -46,6 +63,7 @@ func (h *MCPHandler) HandleWebSearch(ctx context.Context, request mcp.CallToolRe
 	// Perform the search
 	opts := types.WebSearchOptions{
 		Query:        query,
+		SearchEngine: searchEngine,
 		SearchIntent: searchIntent,
 	}
 
@@ -55,7 +73,7 @@ func (h *MCPHandler) HandleWebSearch(ctx context.Context, request mcp.CallToolRe
 	}
 
 	// Format the response
-	resultText := h.webSearchService.FormatSearchResponse(searchResp, query)
+	resultText := h.webSearchService.FormatSearchResponse(searchResp, query, searchEngine)
 	return mcp.NewToolResultText(resultText), nil
 }
 
@@ -108,10 +126,13 @@ func (h *MCPHandler) HandlePing(ctx context.Context, request mcp.CallToolRequest
 // GetWebSearchTool returns the web search tool definition
 func (h *MCPHandler) GetWebSearchTool() mcp.Tool {
 	return mcp.NewTool("web_search",
-		mcp.WithDescription("Search the web using BigModel Web Search API with anti-bot protection"),
+		mcp.WithDescription("Search the web using BigModel Web Search API with configurable search engines"),
 		mcp.WithString("query",
 			mcp.Required(),
 			mcp.Description("The search query to execute"),
+		),
+		mcp.WithString("search_engine",
+			mcp.Description("Search engine to use: search_std (default), search_pro, search_pro_sogou, search_pro_quark"),
 		),
 		mcp.WithBoolean("search_intent",
 			mcp.Description("Whether to enable search intent analysis (default: false)"),

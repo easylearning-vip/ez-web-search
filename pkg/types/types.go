@@ -61,5 +61,6 @@ type WebFetchOptions struct {
 // WebSearchOptions represents options for web searching
 type WebSearchOptions struct {
 	Query        string
+	SearchEngine string
 	SearchIntent bool
 }

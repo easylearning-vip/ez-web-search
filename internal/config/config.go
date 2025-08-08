@@ -22,9 +22,10 @@ type ServerConfig struct {
 
 // BigModelConfig holds BigModel API configuration
 type BigModelConfig struct {
-	Token   string
-	BaseURL string
-	Timeout time.Duration
+	Token        string
+	BaseURL      string
+	Timeout      time.Duration
+	SearchEngine string
 }
 
 // WebFetchConfig holds web fetching configuration
@@ -51,9 +52,10 @@ func Load() *Config {
 			Version: getEnv("SERVER_VERSION", "1.0.0"),
 		},
 		BigModel: BigModelConfig{
-			Token:   getEnv("BIGMODEL_TOKEN", "0f405f7a11b946298b154f042a70f12b.s6VO3ITALpa3bhDo"),
-			BaseURL: getEnv("BIGMODEL_BASE_URL", "https://open.bigmodel.cn/api/paas/v4/web_search"),
-			Timeout: getDurationEnv("BIGMODEL_TIMEOUT", 30*time.Second),
+			Token:        getEnv("BIGMODEL_TOKEN", "0f405f7a11b946298b154f042a70f12b.s6VO3ITALpa3bhDo"),
+			BaseURL:      getEnv("BIGMODEL_BASE_URL", "https://open.bigmodel.cn/api/paas/v4/web_search"),
+			Timeout:      getDurationEnv("BIGMODEL_TIMEOUT", 30*time.Second),
+			SearchEngine: getEnv("BIGMODEL_SEARCH_ENGINE", "search_std"),
 		},
 		WebFetch: WebFetchConfig{
 			Timeout:         getDurationEnv("WEBFETCH_TIMEOUT", 30*time.Second),
@@ -114,28 +116,28 @@ func getDefaultUserAgents() []string {
 		// Chrome on Windows
 		"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
 		"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
-		
+
 		// Chrome on macOS
 		"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
 		"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
-		
+
 		// Firefox on Windows
 		"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0",
 		"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0",
-		
+
 		// Firefox on macOS
 		"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:121.0) Gecko/20100101 Firefox/121.0",
-		
+
 		// Safari on macOS
 		"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15",
 		"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1 Safari/605.1.15",
-		
+
 		// Edge on Windows
 		"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0",
-		
+
 		// Chrome on Linux
 		"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-		
+
 		// Mobile Chrome
 		"Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
 	}

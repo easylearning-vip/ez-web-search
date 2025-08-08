@@ -34,9 +34,15 @@ func NewWebSearchService(cfg *config.Config) *WebSearchService {
 
 // Search performs a web search using BigModel API
 func (s *WebSearchService) Search(ctx context.Context, opts types.WebSearchOptions) (*types.WebSearchResponse, error) {
+	// Use provided search engine or fall back to config default
+	searchEngine := opts.SearchEngine
+	if searchEngine == "" {
+		searchEngine = s.config.BigModel.SearchEngine
+	}
+
 	reqBody := types.WebSearchRequest{
 		SearchQuery:  opts.Query,
-		SearchEngine: "search_std",
+		SearchEngine: searchEngine,
 		SearchIntent: opts.SearchIntent,
 	}
 
@@ -93,9 +99,10 @@ func (s *WebSearchService) Search(ctx context.Context, opts types.WebSearchOptio
 }
 
 // FormatSearchResponse formats the search response for display
-func (s *WebSearchService) FormatSearchResponse(resp *types.WebSearchResponse, query string) string {
+func (s *WebSearchService) FormatSearchResponse(resp *types.WebSearchResponse, query string, searchEngine string) string {
 	var resultText string
 	resultText += fmt.Sprintf("Search Results for: %s\n", query)
+	resultText += fmt.Sprintf("Search Engine: %s\n", searchEngine)
 	resultText += fmt.Sprintf("Request ID: %s\n\n", resp.RequestID)
 
 	// Add search intent information if available
