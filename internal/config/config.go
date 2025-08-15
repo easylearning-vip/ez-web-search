@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 	"time"
@@ -52,7 +53,7 @@ func Load() *Config {
 			Version: getEnv("SERVER_VERSION", "1.0.0"),
 		},
 		BigModel: BigModelConfig{
-			Token:        getEnv("BIGMODEL_TOKEN", "0f405f7a11b946298b154f042a70f12b.s6VO3ITALpa3bhDo"),
+			Token:        getEnv("BIGMODEL_TOKEN", ""),
 			BaseURL:      getEnv("BIGMODEL_BASE_URL", "https://open.bigmodel.cn/api/paas/v4/web_search"),
 			Timeout:      getDurationEnv("BIGMODEL_TIMEOUT", 30*time.Second),
 			SearchEngine: getEnv("BIGMODEL_SEARCH_ENGINE", "search_std"),
@@ -70,6 +71,14 @@ func Load() *Config {
 			Pool: getDefaultUserAgents(),
 		},
 	}
+}
+
+// Validate validates the configuration and returns an error if invalid
+func (c *Config) Validate() error {
+	if c.BigModel.Token == "" {
+		return fmt.Errorf("BIGMODEL_TOKEN is required and must be set")
+	}
+	return nil
 }
 
 // getEnv gets an environment variable with a default value

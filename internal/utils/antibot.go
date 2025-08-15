@@ -129,6 +129,10 @@ func (a *AntiBotManager) IsRateLimited(resp *http.Response) bool {
 
 // GetRetryDelay calculates appropriate retry delay for rate limited requests
 func (a *AntiBotManager) GetRetryDelay(resp *http.Response, attempt int) time.Duration {
+	if resp == nil {
+		return a.GetRetryDelayWithAttempt(attempt)
+	}
+	
 	// Check for Retry-After header
 	if retryAfter := resp.Header.Get("Retry-After"); retryAfter != "" {
 		if duration, err := time.ParseDuration(retryAfter + "s"); err == nil {
@@ -136,6 +140,11 @@ func (a *AntiBotManager) GetRetryDelay(resp *http.Response, attempt int) time.Du
 		}
 	}
 	
+	return a.GetRetryDelayWithAttempt(attempt)
+}
+
+// GetRetryDelayWithAttempt calculates retry delay for failed requests (when response is nil)
+func (a *AntiBotManager) GetRetryDelayWithAttempt(attempt int) time.Duration {
 	// Exponential backoff with jitter
 	baseDelay := time.Duration(attempt) * time.Second
 	maxDelay := 30 * time.Second

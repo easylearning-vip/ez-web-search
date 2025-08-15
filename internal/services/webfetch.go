@@ -1,6 +1,8 @@
 package services
 
 import (
+	"bytes"
+	"compress/gzip"
 	"context"
 	"fmt"
 	"io"
@@ -116,8 +118,23 @@ func (s *WebFetchService) FetchWebPage(ctx context.Context, opts types.WebFetchO
 		return nil, fmt.Errorf("failed to read response body: %w", err)
 	}
 
+	// Check if response is gzip compressed and decompress if needed
+	var reader io.Reader = bytes.NewReader(body)
+	if strings.Contains(resp.Header.Get("Content-Encoding"), "gzip") || len(body) > 2 && body[0] == 0x1f && body[1] == 0x8b {
+		gzipReader, err := gzip.NewReader(bytes.NewReader(body))
+		if err != nil {
+			return nil, fmt.Errorf("failed to create gzip reader: %w", err)
+		}
+		defer gzipReader.Close()
+		decompressed, err := io.ReadAll(gzipReader)
+		if err != nil {
+			return nil, fmt.Errorf("failed to decompress response: %w", err)
+		}
+		reader = bytes.NewReader(decompressed)
+	}
+
 	// Parse HTML
-	doc, err := goquery.NewDocumentFromReader(strings.NewReader(string(body)))
+	doc, err := goquery.NewDocumentFromReader(reader)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse HTML: %w", err)
 	}

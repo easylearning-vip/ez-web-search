@@ -2,11 +2,13 @@ package services
 
 import (
 	"bytes"
+	"compress/gzip"
 	"context"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 	"time"
 
 	"ez-web-search/internal/config"
@@ -85,13 +87,34 @@ func (s *WebSearchService) Search(ctx context.Context, opts types.WebSearchOptio
 		return nil, fmt.Errorf("request was blocked, status: %d", resp.StatusCode)
 	}
 
+	// Read response body
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
 	if resp.StatusCode != http.StatusOK {
-		body, _ := io.ReadAll(resp.Body)
 		return nil, fmt.Errorf("API request failed with status %d: %s", resp.StatusCode, string(body))
 	}
 
+	// Check if response is gzip compressed
+	var reader io.Reader = bytes.NewReader(body)
+	if strings.Contains(resp.Header.Get("Content-Encoding"), "gzip") || len(body) > 2 && body[0] == 0x1f && body[1] == 0x8b {
+		gzipReader, err := gzip.NewReader(bytes.NewReader(body))
+		if err != nil {
+			return nil, fmt.Errorf("failed to create gzip reader: %w", err)
+		}
+		defer gzipReader.Close()
+		decompressed, err := io.ReadAll(gzipReader)
+		if err != nil {
+			return nil, fmt.Errorf("failed to decompress response: %w", err)
+		}
+		reader = bytes.NewReader(decompressed)
+	}
+
+	// Decode JSON response
 	var searchResp types.WebSearchResponse
-	if err := json.NewDecoder(resp.Body).Decode(&searchResp); err != nil {
+	if err := json.NewDecoder(reader).Decode(&searchResp); err != nil {
 		return nil, fmt.Errorf("failed to decode response: %w", err)
 	}
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# EZ Web Search MCP Server - One-Click Installation Script
-# This script downloads, installs, and configures the EZ Web Search MCP Server
+# EZ Web Search - Binary Installation Script
+# This script downloads and installs the EZ Web Search binary
 
 set -e
 
@@ -16,7 +16,6 @@ NC='\033[0m' # No Color
 REPO="easylearning-vip/ez-web-search"
 BINARY_NAME="ez-web-search"
 INSTALL_DIR="$HOME/.local/bin"
-CONFIG_DIR="$HOME/.claude"
 
 # Functions
 log_info() {
@@ -118,7 +117,7 @@ install_binary() {
 setup_path() {
     # Check if install directory is in PATH
     if [[ ":$PATH:" != *":$INSTALL_DIR:"* ]]; then
-        log_warning "$INSTALL_DIR is not in your PATH"
+        log_info "Adding $INSTALL_DIR to PATH..."
         
         # Add to shell profile
         SHELL_PROFILE=""
@@ -132,10 +131,13 @@ setup_path() {
         
         if [ -n "$SHELL_PROFILE" ]; then
             echo "" >> "$SHELL_PROFILE"
-            echo "# Added by EZ Web Search MCP Server installer" >> "$SHELL_PROFILE"
+            echo "# Added by EZ Web Search installer" >> "$SHELL_PROFILE"
             echo "export PATH=\"$INSTALL_DIR:\$PATH\"" >> "$SHELL_PROFILE"
             log_success "Added $INSTALL_DIR to PATH in $SHELL_PROFILE"
-            log_warning "Please restart your shell or run: source $SHELL_PROFILE"
+            
+            # Source the profile to update current session
+            source "$SHELL_PROFILE"
+            log_success "PATH updated for current session"
         else
             log_warning "Please manually add $INSTALL_DIR to your PATH"
         fi
@@ -144,100 +146,11 @@ setup_path() {
     fi
 }
 
-# Configure Claude Code CLI
-configure_claude_cli() {
-    log_info "Configuring Claude Code CLI..."
-    
-    # Check if Claude CLI is installed
-    if ! command -v claude >/dev/null 2>&1; then
-        log_warning "Claude Code CLI not found. Please install it from: https://claude.ai/cli"
-        log_info "You can configure the MCP server manually later"
-        return
-    fi
-    
-    # Create Claude config directory
-    mkdir -p "$CONFIG_DIR"
-    
-    # MCP configuration file
-    MCP_CONFIG="$CONFIG_DIR/mcp_settings.json"
-    
-    # Backup existing config
-    if [ -f "$MCP_CONFIG" ]; then
-        log_warning "Existing MCP configuration found. Creating backup..."
-        cp "$MCP_CONFIG" "$MCP_CONFIG.backup.$(date +%Y%m%d_%H%M%S)"
-    fi
-    
-    # Prompt for BigModel API token
-    echo
-    log_info "BigModel API Token Configuration"
-    echo "Please enter your BigModel API token:"
-    echo "(Get one from: https://open.bigmodel.cn/)"
-    echo "Press Enter to use the default test token"
-    echo
-    read -p "BigModel API Token: " BIGMODEL_TOKEN
-    
-    if [ -z "$BIGMODEL_TOKEN" ]; then
-        BIGMODEL_TOKEN="0f405f7a11b946298b154f042a70f12b.s6VO3ITALpa3bhDo"
-        log_warning "Using default test token"
-    fi
-    
-    # Create MCP configuration
-    cat > "$MCP_CONFIG" << EOF
-{
-  "mcpServers": {
-    "ez-web-search": {
-      "command": "$INSTALL_DIR/$BINARY_NAME",
-      "env": {
-        "BIGMODEL_TOKEN": "$BIGMODEL_TOKEN",
-        "WEBFETCH_USER_AGENT_ROTATE": "true",
-        "WEBFETCH_DELAY_MIN": "1s",
-        "WEBFETCH_DELAY_MAX": "3s",
-        "WEBFETCH_MAX_CONTENT_SIZE": "5000",
-        "WEBFETCH_MAX_LINKS": "50",
-        "WEBFETCH_MAX_IMAGES": "20",
-        "PATH": "/usr/local/bin:/usr/bin:/bin:$INSTALL_DIR"
-      }
-    }
-  }
-}
-EOF
-    
-    log_success "Claude Code CLI configured: $MCP_CONFIG"
-}
-
-# Test installation
-test_installation() {
-    log_info "Testing installation..."
-    
-    # Test binary
-    if [ -x "$INSTALL_DIR/$BINARY_NAME" ]; then
-        log_success "Binary is executable"
-    else
-        log_error "Binary is not executable"
-        return 1
-    fi
-    
-    # Test MCP configuration
-    if [ -f "$CONFIG_DIR/mcp_settings.json" ]; then
-        if command -v jq >/dev/null 2>&1; then
-            if jq empty "$CONFIG_DIR/mcp_settings.json" 2>/dev/null; then
-                log_success "MCP configuration is valid JSON"
-            else
-                log_error "MCP configuration is invalid JSON"
-                return 1
-            fi
-        else
-            log_success "MCP configuration file created"
-        fi
-    fi
-    
-    log_success "Installation test passed!"
-}
 
 # Main installation function
 main() {
-    echo "🚀 EZ Web Search MCP Server - One-Click Installer"
-    echo "================================================="
+    echo "🚀 EZ Web Search - Binary Installer"
+    echo "==================================="
     echo
     
     # Check prerequisites
@@ -258,26 +171,14 @@ main() {
     # Setup PATH
     setup_path
     
-    # Configure Claude CLI
-    configure_claude_cli
-    
-    # Test installation
-    test_installation
-    
     echo
     log_success "🎉 Installation completed successfully!"
     echo
-    echo "📋 Next steps:"
-    echo "1. Restart your shell or run: source ~/.bashrc (or ~/.zshrc)"
-    echo "2. Start Claude Code CLI: claude"
-    echo "3. Test web search: Search for \"Go programming tutorials\""
-    echo "4. Test web fetch: Fetch content from https://example.com"
+    echo "📋 Ready to use:"
+    echo "   $BINARY_NAME"
     echo
     echo "📚 Documentation: https://github.com/$REPO"
     echo "🔧 Binary location: $INSTALL_DIR/$BINARY_NAME"
-    echo "🔧 Config location: $CONFIG_DIR/mcp_settings.json"
-    echo
-    echo "💡 Tip: You can edit the config file to customize settings"
 }
 
 # Run main function
