@@ -71,14 +71,14 @@ npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/list
 npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name ping
 
 # Test web search
-npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name web_search --tool-arg query="Go programming tutorial"
+npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name ez_web_search --tool-arg query="Go programming tutorial"
 
 # Test web fetch
-npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name web_fetch --tool-arg url="https://www.easylearning.vip"
+npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name ez_web_fetch --tool-arg url="https://www.easylearning.vip"
 
 # Test web fetch with links and images
-npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name web_fetch --tool-arg url="https://www.easylearning.vip" --tool-arg include_links=true --tool-arg include_images=true
+npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name ez_web_fetch --tool-arg url="https://www.easylearning.vip" --tool-arg include_links=true --tool-arg include_images=true
 
 # Test with search intent analysis
-npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name web_search --tool-arg query="MCP testing" --tool-arg search_intent=true
+npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name ez_web_search --tool-arg query="MCP testing" --tool-arg search_intent=true
 ```

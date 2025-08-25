@@ -118,7 +118,7 @@ npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/list
 npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name ping
 
 # Web搜索测试
-npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name web_search --tool-arg query="Go programming tutorial"
+npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name ez_web_search --tool-arg query="Go programming tutorial"
 ```
 
 #### UI模式测试

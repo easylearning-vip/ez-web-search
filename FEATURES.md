@@ -197,10 +197,10 @@ go build -o ez-web-search main.go
 npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/list
 
 # Test web search
-npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name web_search --tool-arg query="AI development"
+npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name ez_web_search --tool-arg query="AI development"
 
 # Test web fetch
-npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name web_fetch --tool-arg url="https://example.com"
+npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name ez_web_fetch --tool-arg url="https://example.com"
 
 # Start interactive UI
 npx @modelcontextprotocol/inspector ./ez-web-search

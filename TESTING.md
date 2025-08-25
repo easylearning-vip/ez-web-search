@@ -42,13 +42,13 @@ npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/list
 npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name ping
 
 # 3. Test web search (basic)
-npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name web_search --tool-arg query="Go programming tutorial"
+npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name ez_web_search --tool-arg query="Go programming tutorial"
 
 # 4. Test web search with intent analysis
-npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name web_search --tool-arg query="MCP testing best practices" --tool-arg search_intent=true
+npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name ez_web_search --tool-arg query="MCP testing best practices" --tool-arg search_intent=true
 
 # 5. Test error handling (missing required parameter)
-npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name web_search
+npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name ez_web_search
 ```
 
 ### UI Mode Testing
@@ -85,7 +85,7 @@ npx @modelcontextprotocol/inspector --cli ./ez-web-search --method initialize
 npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/list
 ```
 
-**Expected:** Two tools (ping, web_search) with proper schemas
+**Expected:** Two tools (ping, ez_web_search) with proper schemas
 
 ### 2. Functional Tests
 
@@ -98,14 +98,14 @@ npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --
 
 #### Web Search - Basic
 ```bash
-npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name web_search --tool-arg query="Go programming"
+npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name ez_web_search --tool-arg query="Go programming"
 ```
 
 **Expected:** Search results with titles, URLs, summaries
 
 #### Web Search - With Intent
 ```bash
-npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name web_search --tool-arg query="MCP testing" --tool-arg search_intent=true
+npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name ez_web_search --tool-arg query="MCP testing" --tool-arg search_intent=true
 ```
 
 **Expected:** Search results + intent analysis section
@@ -114,7 +114,7 @@ npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --
 
 #### Missing Required Parameter
 ```bash
-npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name web_search
+npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name ez_web_search
 ```
 
 **Expected:** Error message about missing query parameter
@@ -153,7 +153,7 @@ python3 interactive_test.py "your search query"
 ### Expected Tool Schema
 ```json
 {
-  "name": "web_search",
+  "name": "ez_web_search",
   "description": "Search the web using BigModel Web Search API",
   "inputSchema": {
     "type": "object",
@@ -229,7 +229,7 @@ npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/list
 npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name ping
 
 # Integration test
-npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name web_search --tool-arg query="test query"
+npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name ez_web_search --tool-arg query="test query"
 ```
 
 ## 🐛 Debugging
@@ -260,14 +260,14 @@ DEBUG=true ./ez-web-search
 
 ### Response Time Testing
 ```bash
-time npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name web_search --tool-arg query="performance test"
+time npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name ez_web_search --tool-arg query="performance test"
 ```
 
 ### Concurrent Testing
 ```bash
 # Run multiple searches simultaneously
 for i in {1..5}; do
-  npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name web_search --tool-arg query="test $i" &
+  npx @modelcontextprotocol/inspector --cli ./ez-web-search --method tools/call --tool-name ez_web_search --tool-arg query="test $i" &
 done
 wait
 ```

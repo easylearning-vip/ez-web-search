@@ -125,7 +125,7 @@ func (h *MCPHandler) HandlePing(ctx context.Context, request mcp.CallToolRequest
 
 // GetWebSearchTool returns the web search tool definition
 func (h *MCPHandler) GetWebSearchTool() mcp.Tool {
-	return mcp.NewTool("web_search",
+	return mcp.NewTool("ez_web_search",
 		mcp.WithDescription("Search the web using BigModel Web Search API with configurable search engines"),
 		mcp.WithString("query",
 			mcp.Required(),
@@ -142,7 +142,7 @@ func (h *MCPHandler) GetWebSearchTool() mcp.Tool {
 
 // GetWebFetchTool returns the web fetch tool definition
 func (h *MCPHandler) GetWebFetchTool() mcp.Tool {
-	return mcp.NewTool("web_fetch",
+	return mcp.NewTool("ez_web_fetch",
 		mcp.WithDescription("Fetch and extract content from a web page with anti-bot protection"),
 		mcp.WithString("url",
 			mcp.Required(),

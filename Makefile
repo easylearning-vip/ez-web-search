@@ -85,11 +85,11 @@ test-ping: build ## Test ping tool
 
 test-search: build ## Test web search tool
 	@echo "Testing web search tool..."
-	npx @modelcontextprotocol/inspector --cli $(BINARY_PATH) --method tools/call --tool-name web_search --tool-arg query="Go programming tutorial"
+	npx @modelcontextprotocol/inspector --cli $(BINARY_PATH) --method tools/call --tool-name ez_web_search --tool-arg query="Go programming tutorial"
 
 test-fetch: build ## Test web fetch tool
 	@echo "Testing web fetch tool..."
-	npx @modelcontextprotocol/inspector --cli $(BINARY_PATH) --method tools/call --tool-name web_fetch --tool-arg url="http://httpbin.org/html"
+	npx @modelcontextprotocol/inspector --cli $(BINARY_PATH) --method tools/call --tool-name ez_web_fetch --tool-arg url="http://httpbin.org/html"
 
 test-all-tools: build ## Test all tools
 	@echo "Testing all tools..."
@@ -98,9 +98,9 @@ test-all-tools: build ## Test all tools
 	@echo "\n2. Testing ping..."
 	npx @modelcontextprotocol/inspector --cli $(BINARY_PATH) --method tools/call --tool-name ping
 	@echo "\n3. Testing web search..."
-	npx @modelcontextprotocol/inspector --cli $(BINARY_PATH) --method tools/call --tool-name web_search --tool-arg query="MCP testing"
+	npx @modelcontextprotocol/inspector --cli $(BINARY_PATH) --method tools/call --tool-name ez_web_search --tool-arg query="MCP testing"
 	@echo "\n4. Testing web fetch..."
-	npx @modelcontextprotocol/inspector --cli $(BINARY_PATH) --method tools/call --tool-name web_fetch --tool-arg url="http://httpbin.org/html"
+	npx @modelcontextprotocol/inspector --cli $(BINARY_PATH) --method tools/call --tool-name ez_web_fetch --tool-arg url="http://httpbin.org/html"
 
 inspector-ui: build ## Start MCP Inspector UI
 	@echo "Starting MCP Inspector UI..."

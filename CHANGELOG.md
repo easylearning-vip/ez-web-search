@@ -5,6 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.1.1] - 2025-08-25
+
+### 🧪 Testing & Quality Improvements
+
+#### Enhanced Testing Suite
+- **Complete Test Script**: Added comprehensive `test_all_features.sh` script
+  - Tests all 3 tools (ping, ez_web_search, ez_web_fetch)
+  - Validates all 4 search engines (search_std, search_pro, search_pro_sogou, search_pro_quark)
+  - Tests search intent analysis functionality
+  - Tests web fetch with links and images options
+  - Validates error handling scenarios
+  - Provides detailed test results and status reporting
+
+#### Documentation Updates
+- **Enhanced Testing Documentation**: Updated TESTING.md with latest test procedures
+- **Feature Documentation**: Improved FEATURES.md with current capabilities
+- **Claude Integration Guide**: Added CLAUDE.md for AI assistant integration
+- **Project Summary**: Updated PROJECT_SUMMARY.md with latest status
+
+#### Quality Assurance
+- ✅ **MCP Inspector Compliance**: All tests pass with official MCP Inspector
+- ✅ **Multi-Engine Validation**: All 4 search engines tested and working
+- ✅ **Error Handling**: Proper error responses validated
+- ✅ **Production Ready**: Complete test coverage for production deployment
+
+### 🔧 Configuration & Environment
+- **Environment File**: Added `.env` template for easy configuration
+- **Token Management**: Improved API token handling and validation
+- **Build Verification**: Enhanced build process validation
+
+---
+
 ## [v1.1.0] - 2025-08-08
 
 ### 🎉 Major Features Added
